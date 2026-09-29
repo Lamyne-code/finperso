@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" translate="no" class="notranslate">
 <head>
 <meta charset="utf-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>FinPerso</title>
 <meta name="description" content="FinPerso : suivi de budget personnel, dépenses, charges à venir et projets.">
@@ -418,7 +419,7 @@ form{display:flex;flex-direction:column;gap:16px}
 
 <header class="appbar">
   <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span><i class="alert" id="burgerAlert" hidden></i></button>
-  <div class="ab-title"><span class="eb"><i id="syncDot"></i>FinPerso</span><h1 id="viewTitle">Tableau de bord</h1></div>
+  <div class="ab-title"><span class="eb"><i id="syncDot"></i><span translate="no" class="notranslate">FinPerso</span></span><h1 id="viewTitle">Tableau de bord</h1></div>
   <div class="month" role="group" aria-label="Mois affiché">
     <button id="prevM" aria-label="Mois précédent"><svg class="i" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
     <span id="monthLabel"></span>
@@ -430,13 +431,13 @@ form{display:flex;flex-direction:column;gap:16px}
 <aside class="drawer" id="drawer" aria-label="Menu principal">
   <div class="dr-head">
     <img class="logo" src="icons/icon-192.png" alt="">
-    <div><b>FinPerso</b><span>Mon argent, en clair</span></div>
+    <div><b translate="no" class="notranslate">FinPerso</b><span>Mon argent, en clair</span></div>
     <button class="icon-btn" id="closeDrawer" aria-label="Fermer le menu"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
   <nav class="dr-nav" id="nav"></nav>
   <div class="dr-sep"></div>
   <button class="dr-cta" data-new="expense"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Noter une dépense</button>
-  <button class="dr-cta dr-install" id="installBtn" hidden><svg class="i" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Installer FinPerso</button>
+  <button class="dr-cta dr-install" id="installBtn" hidden><svg class="i" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Installer <span translate="no" class="notranslate">FinPerso</span></button>
   <div class="dr-foot"><div class="sync" id="sync"><i></i><span>Connexion…</span></div><span id="curLabel">F CFA</span></div>
 </aside>
 
