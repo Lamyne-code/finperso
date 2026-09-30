@@ -506,6 +506,36 @@ html.locked .appbar,html.locked .page,html.locked .fab,html.locked .drawer,html.
 .hero-top{flex-wrap:wrap}
 .hero-label{white-space:nowrap}
 
+.up-scroll{max-height:252px;overflow-y:auto;overscroll-behavior:contain;margin:0 -8px;padding:0 8px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.up-scroll.fade{-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent);mask-image:linear-gradient(to bottom,#000 80%,transparent)}
+.up-more{width:100%;margin-top:10px}
+.up-more .i{width:16px;height:16px}
+.click{cursor:pointer}
+.pl.click:focus-visible,.up-row.click:focus-visible{outline:2px solid var(--brand-2)}
+.pill.post{background:#E0F0FF;color:#1877C9}
+.dtile.post{background:#E0F0FF;box-shadow:none}.dtile.post b{color:#1877C9}
+.cal .dots i.post{background:#1877C9}
+.stchips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stchips button{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:11px 4px;font-weight:700;font-size:.85rem;color:var(--muted);transition:all .2s}
+.stchips button[data-st="prevue"][aria-pressed="true"]{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.stchips button[data-st="payee"][aria-pressed="true"]{border-color:var(--good);color:var(--good);background:var(--good-soft)}
+.stchips button[data-st="reportee"][aria-pressed="true"]{border-color:#1877C9;color:#1877C9;background:#E0F0FF}
+.tx .a{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.edit-hint{display:flex;align-items:center;gap:3px;font-size:.66rem;font-weight:700;color:var(--muted);opacity:.7}
+.edit-hint .i{width:11px;height:11px}
+
+:root[data-theme="dark"] .pill.post,:root[data-theme="dark"] .dtile.post,:root[data-theme="dark"] .stchips button[data-st="reportee"][aria-pressed="true"]{background:#0F2A40}
+:root[data-theme="dark"] .pill.post,:root[data-theme="dark"] .dtile.post b,:root[data-theme="dark"] .stchips button[data-st="reportee"][aria-pressed="true"]{color:#7CC4FF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill.post,:root:not([data-theme="light"]) .dtile.post,:root:not([data-theme="light"]) .stchips button[data-st="reportee"][aria-pressed="true"]{background:#0F2A40}
+:root:not([data-theme="light"]) .pill.post,:root:not([data-theme="light"]) .dtile.post b,:root:not([data-theme="light"]) .stchips button[data-st="reportee"][aria-pressed="true"]{color:#7CC4FF}}
+
+button.hs{border:0;font:inherit;color:inherit;text-align:left;cursor:pointer;position:relative;transition:background .2s,transform .15s}
+button.hs:hover{background:rgb(255 255 255 / .18)}
+button.hs:active{transform:scale(.97)}
+.hs .hs-go{width:14px;height:14px;opacity:.55;margin-left:auto;flex:none}
+.sheet-tools{display:flex;align-items:center;gap:8px}
+#delTop .i{width:15px;height:15px}
+
 </style>
 
 <header class="appbar">
@@ -542,10 +572,10 @@ html.locked .appbar,html.locked .page,html.locked .fab,html.locked .drawer,html.
       <div class="hero-amt"><b class="num mask" id="kBal">0</b><small id="heroCur">F CFA</small></div>
       <div class="spark" id="spark"></div>
       <div class="hero-stats">
-        <div class="hs"><span class="ic in"><svg class="i" viewBox="0 0 24 24"><path d="M17 7L7 17M7 9v8h8"/></svg></span><div><span>Revenus</span><b class="num mask" id="kInc">0</b></div></div>
-        <div class="hs"><span class="ic out"><svg class="i" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span><div><span>Dépenses</span><b class="num mask" id="kExp">0</b></div></div>
-        <div class="hs"><span class="ic sv"><svg class="i" viewBox="0 0 24 24"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 7v5c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5"/></svg></span><div><span>Épargne</span><b class="num mask" id="kSav">0</b></div></div>
-        <div class="hs"><span class="ic up"><svg class="i" viewBox="0 0 24 24"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="8"/></svg></span><div><span>À venir</span><b class="num mask" id="kUp">0</b></div></div>
+        <button type="button" class="hs" data-hs="income"><span class="ic in"><svg class="i" viewBox="0 0 24 24"><path d="M17 7L7 17M7 9v8h8"/></svg></span><div><span>Revenus</span><b class="num mask" id="kInc">0</b></div><svg class="i hs-go" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button type="button" class="hs" data-hs="expense"><span class="ic out"><svg class="i" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span><div><span>Dépenses</span><b class="num mask" id="kExp">0</b></div><svg class="i hs-go" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button type="button" class="hs" data-hs="saving"><span class="ic sv"><svg class="i" viewBox="0 0 24 24"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 7v5c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5"/></svg></span><div><span>Épargne</span><b class="num mask" id="kSav">0</b></div><svg class="i hs-go" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button type="button" class="hs" data-hs="upcoming"><span class="ic up"><svg class="i" viewBox="0 0 24 24"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="8"/></svg></span><div><span>À venir</span><b class="num mask" id="kUp">0</b></div><svg class="i hs-go" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
       <p class="hero-foot" id="heroFoot"></p>
     </article>
@@ -558,7 +588,7 @@ html.locked .appbar,html.locked .page,html.locked .fab,html.locked .drawer,html.
         <button class="qa pln" data-new="plan"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg></span>À venir</button>
         <button class="qa pj" data-new="project"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Projet</button>
       </div>
-      <div class="sub-h"><h3>À venir</h3><button class="link" data-go="plan" id="upAll">Tout voir</button></div>
+      <div class="sub-h"><h3>À venir</h3><span class="hint" id="upHint"></span></div>
       <div id="upcoming"></div>
     </article>
     <article class="card s5" style="--i:2">
@@ -614,7 +644,7 @@ html.locked .appbar,html.locked .page,html.locked .fab,html.locked .drawer,html.
     <article class="card s5" style="--i:4">
       <div class="card-h"><h2>Calendrier</h2><span class="hint">Touchez un jour</span></div>
       <div class="cal" id="cal"></div>
-      <div class="cal-legend"><span><i style="background:var(--warn)"></i>Prévue</span><span><i style="background:var(--danger)"></i>En retard</span><span><i style="background:var(--good)"></i>Payée</span><span><i style="background:var(--brand-2)"></i>Dépenses</span></div>
+      <div class="cal-legend"><span><i style="background:var(--warn)"></i>En attente</span><span><i style="background:#1877C9"></i>Reportée</span><span><i style="background:var(--danger)"></i>En retard</span><span><i style="background:var(--good)"></i>Payée</span><span><i style="background:var(--brand-2)"></i>Dépenses</span></div>
       <div id="calDetail"></div>
     </article>
     <article class="card s12" style="--i:5">
@@ -703,7 +733,7 @@ html.locked .appbar,html.locked .page,html.locked .fab,html.locked .drawer,html.
   <div class="sheet-scrim" id="scrim"></div>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
     <div class="handle"></div>
-    <div class="sheet-h"><h2 id="sheetTitle"></h2><button class="icon-btn" id="closeSheet" aria-label="Fermer"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-h"><h2 id="sheetTitle"></h2><div class="sheet-tools"><button class="btn small danger" type="button" id="delTop" hidden></button><button class="icon-btn" id="closeSheet" aria-label="Fermer"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
     <form id="txForm" autocomplete="off">
       <div id="editBanner" class="editing" hidden>Modification en cours</div>
       <div class="seg" id="typeSeg"><span class="ind" id="segInd"></span>
@@ -717,6 +747,8 @@ html.locked .appbar,html.locked .page,html.locked .fab,html.locked .drawer,html.
         <button type="button" data-dir="out"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>Retrait</button>
       </div>
       <div class="amount"><label for="fAmount" id="amtLabel"></label><div class="row"><input id="fAmount" inputmode="decimal" placeholder="0" required></div><span class="cur" id="amtCur">F CFA</span></div>
+      <div class="field" id="statusField" hidden><span class="lbl">Statut</span><div class="stchips" id="stChips"><button type="button" data-st="prevue">En attente</button><button type="button" data-st="payee">Payée</button><button type="button" data-st="reportee">Reportée</button></div></div>
+      <div class="field" id="payDateField" hidden><label for="fPayDate" id="payDateLbl">Date du paiement</label><input type="date" id="fPayDate"></div>
       <div class="field" id="labelField" hidden><label for="fLabel">Libellé</label><input id="fLabel" maxlength="80" placeholder="Ex. Loyer d'octobre"></div>
       <div class="field"><span class="lbl" id="catLbl">Catégorie</span><div class="catgrid" id="catGrid" role="group" aria-label="Catégorie"></div></div>
       <div class="field" id="subField"><label for="fSub">Sous-catégorie</label><input id="fSub" maxlength="40" placeholder="Facultatif"><div class="chips" id="subChips"></div></div>
@@ -729,7 +761,6 @@ html.locked .appbar,html.locked .page,html.locked .fab,html.locked .drawer,html.
       <div class="field" id="noteField"><label for="fNote">Note</label><input id="fNote" maxlength="120" placeholder="Ex. courses marché Cocody"></div>
       <div class="actions">
         <button class="btn" type="submit" id="submitBtn" style="flex:1"></button>
-        <button class="btn soft" type="button" id="payBtn" hidden>Marquer payée</button>
         <button class="btn danger" type="button" id="deleteBtn" hidden></button>
       </div>
     </form>
@@ -765,6 +796,10 @@ html.locked .appbar,html.locked .page,html.locked .fab,html.locked .drawer,html.
 
 <script>
 const EN={
+"Mois suivants":"Following months","Supprimé. La charge « {l} » repasse en attente.":"Deleted. The bill \"{l}\" is back to pending.",
+"En attente":"Pending","Reportée":"Postponed","Reportée au":"Postponed to","Statut":"Status","Date du paiement":"Payment date","Choisis la nouvelle date.":"Pick the new date.",
+"Reportée au {d}":"Postponed to {d}","Statut modifié, la dépense liée a été retirée":"Status changed, the linked expense was removed","initialement le {d}":"originally {d}","payée le {d}":"paid on {d}",
+"Total à payer":"Total to pay","Voir plus":"See more",
 "13e mois":"13th month","3 rappels au maximum":"3 reminders maximum","Achat important":"Big purchase","Actions rapides":"Quick actions",
 "Active d'abord le code PIN":"Turn on the PIN first","Activer":"Turn on","Activer l'empreinte":"Turn on fingerprint","Activé":"On",
 "Activé : demandé à chaque ouverture":"On: asked every time you open the app","Activée":"On","Afficher les montants":"Show amounts",
@@ -865,7 +900,7 @@ const EN={
 "Mode de paiement ":"Payment method","Montant ":"Amount","Type":"Type","Projet ":"Project"
 };
 
-const APP_VERSION='6.0';
+const APP_VERSION='8.0';
 const I={
  dash:'<path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/>',
  ops:'<path d="M7 4v16M7 4L4 7M7 4l3 3M17 20V4M17 20l-3-3M17 20l3-3"/>',
@@ -900,6 +935,8 @@ const I={
  finger:'<path d="M12 11v3M8.5 7.5A5 5 0 0 1 17 11v2M7 11a5 5 0 0 1 .5-2.2M7 14v-3M10 19c.6-1.5 1-3.2 1-5v-3a1 1 0 0 1 2 0v3M14.5 19.5c.4-1 .5-2 .5-3.5M17 16c0 .7 0 1.4-.1 2M5 7.5A9 9 0 0 1 19 6.5M4 11v1M20 11v2"/>',
  key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/>',
  eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',eyeoff:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/>',
+ chev:'<path d="M9 6l6 6-6 6"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/>',
+ trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
  back:'<path d="M9 6h11v12H9l-6-6zM12 10l4 4M16 10l-4 4"/>'};
 const ico=(n,c='')=>`<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true">${I[n]||I.autre}</svg>`;
 
@@ -967,7 +1004,7 @@ const money=n=>fmt(n)+' '+cur().sym;
 const parseAmt=s=>{const v=parseFloat(String(s).replace(/\s/g,'').replace(',','.'));return isFinite(v)?Math.round(v*10**cur().dec)/10**cur().dec:0};
 function bindAmount(el){el.addEventListener('input',e=>{if(cur().dec)return;const d=e.target.value.replace(/\D/g,'');e.target.value=d?fmt(+d):''})}
 const isLate=p=>p.status!=='payee'&&p.due<todayStr();
-const planStatus=p=>p.status==='payee'?{c:'paid',l:t('Payée')}:isLate(p)?{c:'late',l:t('En retard')}:{c:'plan',l:t('Prévue')};
+const planStatus=p=>p.status==='payee'?{c:'paid',l:t('Payée')}:isLate(p)?{c:'late',l:t('En retard')}:p.status==='reportee'?{c:'post',l:t('Reportée')}:{c:'plan',l:t('En attente')};
 const projName=id=>S.projects.find(p=>p.id===id)?.name;
 const cic=(c,sm)=>`<span class="cic${sm?' sm':''}" style="--c:${c.color}">${ico(c.id)}</span>`;
 const dtile=(d,cls)=>`<span class="dtile ${cls}"><b>${+d.slice(8,10)}</b><span>${dDate(d).toLocaleDateString(loc(),{month:'short'}).replace('.','')}</span></span>`;
@@ -1088,8 +1125,8 @@ function openSheet(mode,item,opts={}){
   F.type=mode;F.rem=[...(S.settings.defaultReminders||[3,1])];F.cat=item?.cat||{income:'salaire',saving:'urgence'}[mode]||'alim';
   $({expense:'tExp',income:'tInc',saving:'tSav',plan:'tPlan'}[mode]).checked=true;
   $('fDate').value=item?(item.date||item.due):(opts.due||(mode==='plan'&&S.month!==monthKey(todayStr())?S.month+'-05':todayStr()));
-  if(item){$('fAmount').value=fmt(item.amount);$('fSub').value=item.sub||'';$('fNote').value=item.note||'';$('fLabel').value=item.label||'';$('fMethod').value=item.method||METHODS[0];if(item.reminders)F.rem=[...item.reminders]}
-  $('typeSeg').hidden=!!item;$('editBanner').hidden=!item;$('deleteBtn').hidden=!item;$('payBtn').hidden=!(item&&mode==='plan'&&item.status!=='payee');
+  if(item){$('fAmount').value=fmt(item.amount);$('fSub').value=item.sub||'';$('fNote').value=item.note||'';$('fLabel').value=item.label||'';$('fMethod').dataset.keep=item.method||METHODS[0];if(item.reminders)F.rem=[...item.reminders]}
+  $('typeSeg').hidden=!!item;$('editBanner').hidden=!item;$('deleteBtn').hidden=!item;$('delTop').hidden=!item||S.readOnly;F.st=item?.status==='payee'?'payee':item?.status==='reportee'?'reportee':'prevue';F.planItem=mode==='plan'?item:null;if(mode==='plan'&&item&&item.status==='payee'){$('fPayDate').value=item.paidOn||todayStr();const lt=S.tx.find(x=>x.id===item.paidTxId);if(lt)$('fMethod').dataset.keep=lt.method}
   $('submitBtn').textContent=item?t('Enregistrer'):t('Ajouter');
   syncFormType();if(item)$('fProj').value=item.projectId||'';
   if(matchMedia('(min-width:601px)').matches)setTimeout(()=>$('fAmount').focus(),80);
@@ -1106,10 +1143,13 @@ function syncFormType(){
   $('catLbl').textContent=t(sav?"Poche d'épargne":'Catégorie');
   $('labelField').hidden=!plan;$('fLabel').required=plan;
   $('dirField').hidden=!sav;$('dirField').querySelectorAll('[data-dir]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.dir===F.dir));
-  $('methodField').hidden=plan;$('remField').hidden=!plan;$('noteField').hidden=plan;$('subField').hidden=sav;
+  const editPlan=plan&&!!F.edit;$('statusField').hidden=!editPlan;
+  $('stChips').querySelectorAll('[data-st]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.st===F.st));
+  $('payDateField').hidden=!(editPlan&&(F.st==='payee'||F.st==='reportee'));$('payDateLbl').textContent=t(F.st==='reportee'?'Reportée au':'Date du paiement');
+  $('methodField').hidden=plan&&!(editPlan&&F.st==='payee');$('remField').hidden=!plan;$('noteField').hidden=plan;$('subField').hidden=sav;
   $('projField').hidden=ty==='income'||sav||!S.projects.length;
   const pv=$('fProj').value;$('fProj').innerHTML=`<option value="">${t('Aucun')}</option>`+S.projects.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');$('fProj').value=pv;
-  $('fMethod').innerHTML=METHODS.map(m=>`<option value="${m}">${t(m)}</option>`).join('');
+  const mv=$('fMethod').dataset.keep||$('fMethod').value;delete $('fMethod').dataset.keep;$('fMethod').innerHTML=METHODS.map(m=>`<option value="${m}">${t(m)}</option>`).join('');if(METHODS.includes(mv))$('fMethod').value=mv;
   $('fAmount').style.color=ty==='income'?'var(--good)':plan?'var(--warn)':sav?'#1877C9':'var(--fg)';
   renderCatGrid();renderRemChips();
 }
@@ -1128,10 +1168,25 @@ $('remChips').addEventListener('change',e=>{const cb=e.target;if(cb.dataset.rem=
 bindAmount($('fAmount'));bindAmount($('pBudget'));
 
 let delArmed=false,delT;
-function resetDelete(){delArmed=false;clearTimeout(delT);$('deleteBtn').textContent=t('Supprimer');$('pDelete').textContent=t('Supprimer')}
-function armDelete(btn){if(delArmed)return true;delArmed=true;btn.textContent=t('Confirmer ?');delT=setTimeout(resetDelete,4000);return false}
-$('deleteBtn').onclick=async()=>{if(!armDelete($('deleteBtn')))return;const e=F.edit;closeSheet();try{await del(e.kind,e.id);toast(t('Supprimé'))}catch(err){handleErr(err)}};
-$('payBtn').onclick=async()=>{const id=F.edit?.id;closeSheet();await markPaid(id)};
+function resetDelete(){delArmed=false;clearTimeout(delT);$('deleteBtn').textContent=t('Supprimer');$('pDelete').textContent=t('Supprimer');$('delTop').innerHTML=ico('trash')+t('Supprimer')}
+function armDelete(btn){if(delArmed)return true;delArmed=true;[$('deleteBtn'),$('pDelete'),$('delTop')].forEach(b=>b.textContent=t('Confirmer ?'));delT=setTimeout(resetDelete,4000);return false}
+async function deleteCurrent(btn){
+  if(!armDelete(btn))return;
+  if(S.pjEdit){const id=S.pjEdit;closeSheet();try{await del('projects',id);toast(t('Projet supprimé, ses dépenses restent dans l’historique'))}catch(e){handleErr(e)}return}
+  const e=F.edit;if(!e)return;closeSheet();
+  try{
+    if(e.kind==='tx'){const x=S.tx.find(y=>y.id===e.id);await del('tx',e.id);
+      const p=x&&S.plans.find(q=>q.paidTxId===e.id);if(p){const q={...p,status:'prevue',paidTxId:null};delete q.paidOn;await put('plans',q);toast(t('Supprimé. La charge « {l} » repasse en attente.',{l:p.label}));return}}
+    else await del(e.kind,e.id);
+    toast(t('Supprimé'));
+  }catch(err){handleErr(err)}
+}
+$('delTop').onclick=()=>deleteCurrent($('delTop'));
+$('deleteBtn').onclick=()=>deleteCurrent($('deleteBtn'));
+$('stChips').addEventListener('click',e=>{const b=e.target.closest('[data-st]');if(!b)return;F.st=b.dataset.st;const p=F.planItem;
+  if(F.st==='payee')$('fPayDate').value=(p&&p.paidOn)||todayStr();
+  if(F.st==='reportee'){const base=$('fDate').value||todayStr(),d=dDate(base);d.setDate(d.getDate()+7);$('fPayDate').value=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+  syncFormType()});
 
 $('txForm').addEventListener('submit',async e=>{
   e.preventDefault();if(S.readOnly)return;
@@ -1141,10 +1196,21 @@ $('txForm').addEventListener('submit',async e=>{
   try{
     if(F.type==='plan'){
       const label=$('fLabel').value.trim();if(!label){toast(t('Donne un libellé à cette charge.'));$('fLabel').focus();return}
-      const prev=ed?S.plans.find(p=>p.id===ed.id):null;
-      const obj={id:ed?.id||newId('pl'),label,amount,cat:F.cat,sub,due:date,status:prev?.status||'prevue',reminders:F.rem,projectId,paidTxId:prev?.paidTxId||null,createdAt:prev?.createdAt||Date.now()};
-      closeSheet();await put('plans',obj);
-      toast(prev&&prev.due!==date?t('Échéance déplacée au {d}',{d:dateShort(date)}):ed?t('Charge modifiée'):t('Charge prévue le {d}',{d:dateShort(date)}));
+      const prev=ed?S.plans.find(p=>p.id===ed.id):null,st=prev?F.st:'prevue',pd=$('fPayDate').value;
+      if(prev&&st==='reportee'&&!pd){toast(t('Choisis la nouvelle date.'));return}
+      const obj={...(prev||{}),id:ed?.id||newId('pl'),label,amount,cat:F.cat,sub,due:st==='reportee'?pd:date,status:st,reminders:F.rem,projectId,paidTxId:prev?.paidTxId||null,createdAt:prev?.createdAt||Date.now()};
+      if(st==='reportee'&&obj.due!==(prev?.due))obj.postponedFrom=prev?.postponedFrom||prev?.due;
+      closeSheet();
+      const linked=prev?.paidTxId?S.tx.find(x=>x.id===prev.paidTxId):null;
+      if(st==='payee'){
+        const tx={...(linked||{}),id:linked?.id||newId('tx'),type:'expense',amount,cat:F.cat,sub,date:pd||todayStr(),method:$('fMethod').value,note:(linked&&linked.note)||label,projectId:projectId||null,planId:obj.id,createdAt:linked?.createdAt||Date.now()};
+        await put('tx',tx);obj.paidTxId=tx.id;obj.paidOn=tx.date;
+      }else if(linked){await del('tx',linked.id);obj.paidTxId=null;delete obj.paidOn}
+      else{obj.paidTxId=null;delete obj.paidOn}
+      await put('plans',obj);
+      const was=prev?.status;
+      toast(!prev?t('Charge prévue le {d}',{d:dateShort(date)}):st==='payee'&&was!=='payee'?t('« {l} » payée et ajoutée aux dépenses',{l:label}):st==='reportee'&&prev.due!==obj.due?t('Reportée au {d}',{d:dateShort(obj.due)}):was==='payee'&&st!=='payee'?t('Statut modifié, la dépense liée a été retirée'):prev.due!==date?t('Échéance déplacée au {d}',{d:dateShort(date)}):t('Charge modifiée'));
+      if(st==='payee'&&was!=='payee'&&projectId)await logProject(projectId,`${t('Payé')} : ${label} (${money(amount)})`);
       if(!ed&&projectId)await logProject(projectId,`${t('Engagement prévu')} : ${label} (${money(amount)})`);
     }else{
       const prev=ed?S.tx.find(x=>x.id===ed.id):null,sav=F.type==='saving';
@@ -1157,19 +1223,13 @@ $('txForm').addEventListener('submit',async e=>{
     }
   }catch(err){handleErr(err)}
 });
-async function markPaid(id){
-  const p=S.plans.find(x=>x.id===id);if(!p||S.readOnly)return;
-  const tx={id:newId('tx'),type:'expense',amount:p.amount,cat:p.cat,sub:p.sub||'',date:todayStr(),method:METHODS[0],note:p.label,projectId:p.projectId||null,planId:p.id,createdAt:Date.now()};
-  try{await put('tx',tx);await put('plans',{...p,status:'payee',paidTxId:tx.id,paidOn:todayStr()});toast(t('« {l} » payée et ajoutée aux dépenses',{l:p.label}));
-    if(p.projectId)await logProject(p.projectId,`${t('Payé')} : ${p.label} (${money(p.amount)})`)}catch(e){handleErr(e)}
-}
 
 /* ---------- projets : formulaire ---------- */
 function renderPjTypes(){$('pTypes').innerHTML=PJ_TYPES.map(x=>`<button type="button" class="chip" data-pt="${x}" aria-pressed="${x===S.pjType}">${t(x)}</button>`).join('')}
 $('pTypes').addEventListener('click',e=>{const b=e.target.closest('[data-pt]');if(!b)return;S.pjType=b.dataset.pt;renderPjTypes()});
 function openProjectForm(p){
   S.pjEdit=p?p.id:null;$('pjForm').reset();resetDelete();S.pjType=p?.type||'Vacances';renderPjTypes();
-  $('sheetTitle').textContent=t(p?'Modifier le projet':'Nouveau projet');$('pSubmit').textContent=t(p?'Enregistrer':'Créer le projet');$('pDelete').hidden=!p;
+  $('sheetTitle').textContent=t(p?'Modifier le projet':'Nouveau projet');$('pSubmit').textContent=t(p?'Enregistrer':'Créer le projet');$('pDelete').hidden=!p;$('delTop').hidden=!p||S.readOnly;
   if(p){$('pName').value=p.name;$('pTarget').value=p.target||'';$('pBudget').value=fmt(p.budget);$('pNote').value=p.note||''}
   if(matchMedia('(min-width:601px)').matches)setTimeout(()=>$('pName').focus(),80);
 }
@@ -1182,7 +1242,7 @@ $('pjForm').addEventListener('submit',async e=>{
   closeSheet();S.openProject=obj.id;if(S.tab!=='proj')go('proj');
   try{await put('projects',obj);toast(t(prev?'Projet modifié':'Projet créé'))}catch(err){handleErr(err)}
 });
-$('pDelete').onclick=async()=>{if(!armDelete($('pDelete')))return;const id=S.pjEdit;closeSheet();try{await del('projects',id);toast(t('Projet supprimé, ses dépenses restent dans l’historique'))}catch(e){handleErr(e)}};
+$('pDelete').onclick=()=>deleteCurrent($('pDelete'));
 
 /* ---------- calculs ---------- */
 function sums(m){let inc=0,exp=0,sav=0,n=0;const byCat={};S.tx.forEach(x=>{if(monthKey(x.date)!==m)return;n++;if(x.type==='income')inc+=x.amount;else if(x.type==='saving')sav+=savDelta(x);else{exp+=x.amount;byCat[x.cat]=(byCat[x.cat]||0)+x.amount}});return{inc,exp,sav,byCat,n}}
@@ -1204,13 +1264,13 @@ function smooth(pts){if(pts.length<2)return pts.length?`M${pts[0][0]},${pts[0][1
 function txRow(x){const c=CAT[x.cat]||CAT.autre,pj=x.projectId?projName(x.projectId):null,sav=x.type==='saving';
   const meta=sav?`${t('Épargne')} · ${t(x.dir==='out'?'Retrait':'Versement')}${x.method?' · '+esc(t(x.method)):''}`:`${esc(t(c.label))}${x.sub?' · '+esc(x.sub):''} · ${esc(t(x.method||''))}${pj?' · '+esc(pj):''}`;
   const sign=x.type==='income'||(sav&&x.dir==='out')?'+':'−';
-  return `<button class="tx" data-tx="${esc(x.id)}" type="button">${cic(c)}<span class="t"><b>${esc(x.note||x.sub||t(c.label))}</b><span>${meta}</span></span><span class="a num ${x.type==='income'?'in':sav?'sv':''}">${sign}${fmt(x.amount)}</span></button>`}
+  return `<button class="tx" data-tx="${esc(x.id)}" type="button">${cic(c)}<span class="t"><b>${esc(x.note||x.sub||t(c.label))}</b><span>${meta}</span></span><span class="a num ${x.type==='income'?'in':sav?'sv':''}">${sign}${fmt(x.amount)}${S.readOnly?'':`<small class="edit-hint">${ico('edit')}${t('Modifier')}</small>`}</span></button>`}
 function planRow(p){const c=CAT[p.cat]||CAT.autre,st=planStatus(p),pj=p.projectId?projName(p.projectId):null,n=p.reminders?.length||0;
-  return `<div class="pl">${dtile(p.due,st.c)}<div class="t" data-plan="${esc(p.id)}" role="button" tabindex="0"><b>${esc(p.label)}</b><span>${esc(t(c.label))}${p.sub?' · '+esc(p.sub):''}${pj?' · '+esc(pj):''}${n?' · '+t(n>1?'{n} rappels':'{n} rappel',{n}):''}</span></div>
-  <div class="side"><b class="num">${fmt(p.amount)}</b><div class="row"><span class="pill ${st.c}">${st.l}</span>${p.status!=='payee'&&!S.readOnly?`<button class="mini" data-pay="${esc(p.id)}">${t('Payée')}</button>`:''}</div></div></div>`}
+  const extra=p.status==='reportee'&&p.postponedFrom?' · '+t('initialement le {d}',{d:dateShort(p.postponedFrom)}):p.status==='payee'&&p.paidOn?' · '+t('payée le {d}',{d:dateShort(p.paidOn)}):'';
+  return `<div class="pl click" data-plan="${esc(p.id)}" role="button" tabindex="0">${dtile(p.due,st.c)}<div class="t"><b>${esc(p.label)}</b><span>${esc(t(c.label))}${p.sub?' · '+esc(p.sub):''}${pj?' · '+esc(pj):''}${extra}${n&&p.status!=='payee'?' · '+t(n>1?'{n} rappels':'{n} rappel',{n}):''}</span></div>
+  <div class="side"><b class="num">${fmt(p.amount)}</b><span class="pill ${st.c}">${st.l}</span></div></div>`}
 document.addEventListener('click',e=>{
   if(isLocked())return;
-  const pay=e.target.closest('[data-pay]');if(pay){markPaid(pay.dataset.pay);return}
   const tx=e.target.closest('[data-tx]');if(tx&&!S.readOnly){const x=S.tx.find(y=>y.id===tx.dataset.tx);if(x)openSheet(x.type,x);return}
   const pl=e.target.closest('[data-plan]');if(pl&&!S.readOnly){const p=S.plans.find(y=>y.id===pl.dataset.plan);if(p)openSheet('plan',p)}
 });
@@ -1223,7 +1283,7 @@ function render(){
   $('monthLabel').textContent=monthPill(S.month);
   const s=sums(S.month),prev=sums(shiftMonth(S.month,-1));
   const monthTx=S.tx.filter(x=>monthKey(x.date)===S.month),monthPlans=S.plans.filter(p=>monthKey(p.due)===S.month);
-  const upcoming=monthPlans.filter(p=>p.status!=='payee').reduce((a,p)=>a+p.amount,0);
+  const upcoming=S.plans.filter(p=>p.status!=='payee').reduce((a,p)=>a+p.amount,0); // même total que la liste « À venir »
   const late=S.plans.filter(isLate);
   const lb=$('lateBadge');if(lb){lb.hidden=!late.length;lb.textContent=late.length}$('burgerAlert').hidden=!late.length;
   const bal=s.inc-s.exp-s.sav;
@@ -1253,12 +1313,15 @@ function renderSpark(monthTx){
 }
 function renderUpcoming(){ // toutes les charges non payées, dès qu'elles sont notées
   const list=S.plans.filter(p=>p.status!=='payee').sort((a,b)=>a.due.localeCompare(b.due));
-  $('upAll').hidden=list.length<=6;$('upAll').textContent=t('Tout voir ({n})',{n:list.length});
+  $('upHint').textContent=list.length?t('{n} charge(s) à payer',{n:list.length}):'';
   if(!list.length){$('upcoming').innerHTML=emptyBox('plan',t('Rien à venir. Note tes charges (loyer, CIE, scolarité…) dans le calendrier : elles apparaîtront ici.'),S.readOnly?'':`<button class="btn small" data-new="plan">${t('Ajouter une charge')}</button>`);return}
   const tot=list.reduce((a,p)=>a+p.amount,0);
-  $('upcoming').innerHTML=list.slice(0,6).map(p=>{const d=dueText(p),st=planStatus(p);
-    return `<div class="up-row">${dtile(p.due,d.cls==='late'?'late':d.cls==='soon'?'soon':'plan')}<div class="t" data-plan="${esc(p.id)}" role="button" tabindex="0"><b>${esc(p.label)}</b><span class="${d.cls}">${d.txt} · ${esc(catLabel(p.cat))}</span></div><div class="side"><b class="num">${fmt(p.amount)}</b>${S.readOnly?'':`<button class="mini" data-pay="${esc(p.id)}">${t('Payée')}</button>`}</div></div>`}).join('')
-    +`<div class="up-total"><span>${t('{n} charge(s) à payer',{n:list.length})}</span><b class="num">${money(tot)}</b></div>`;
+  $('upcoming').innerHTML=`<div class="up-scroll" id="upScroll">${list.map(p=>{const d=dueText(p),st=planStatus(p);
+    return `<div class="up-row click" data-plan="${esc(p.id)}" role="button" tabindex="0">${dtile(p.due,d.cls==='late'?'late':p.status==='reportee'?'post':d.cls==='soon'?'soon':'plan')}<div class="t"><b>${esc(p.label)}</b><span class="${d.cls}">${d.txt} · ${esc(catLabel(p.cat))}</span></div><div class="side"><b class="num">${fmt(p.amount)}</b><span class="pill ${st.c}">${st.l}</span></div></div>`}).join('')}</div>
+    <div class="up-total"><span>${t('Total à payer')}</span><b class="num">${money(tot)}</b></div>
+    <button class="btn small ghost up-more" data-go="plan">${t('Voir plus')}${ico('chev')}</button>`;
+  const sc=$('upScroll');requestAnimationFrame(()=>{sc.classList.toggle('fade',sc.scrollHeight>sc.clientHeight+4)});
+  sc.onscroll=()=>sc.classList.toggle('fade',sc.scrollTop+sc.clientHeight<sc.scrollHeight-4);
 }
 function renderRecent(){
   const r=[...S.tx].sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||0)-(a.createdAt||0)).slice(0,6);
@@ -1319,6 +1382,8 @@ function renderPlans(monthPlans){
   let h='';
   if(late.length)h+=`<div class="sec-label bad">${t('En retard des mois précédents')}</div>`+late.map(planRow).join('')+`<div class="sec-label">${monthName(S.month)}</div>`;
   h+=list.length?list.map(planRow).join(''):emptyBox('plan',t('Aucune charge prévue en {m}. Note ce qui va tomber : loyer, CIE, SODECI, scolarité, abonnements.',{m:monthName(S.month)}),S.readOnly?'':`<button class="btn small" data-new="plan">${t('Ajouter une charge')}</button>`);
+  const later=S.plans.filter(p=>p.status!=='payee'&&monthKey(p.due)>S.month).sort((a,b)=>a.due.localeCompare(b.due));
+  if(later.length)h+=`<div class="sec-label">${t('Mois suivants')}</div>`+later.map(planRow).join('');
   $('plans').innerHTML=h;
   const prevM=shiftMonth(S.month,-1),src=S.plans.filter(p=>monthKey(p.due)===prevM),labels=new Set(monthPlans.map(p=>p.label.toLowerCase())),todo=src.filter(p=>!labels.has(p.label.toLowerCase()));
   const b=$('copyPrev');b.hidden=!src.length||S.readOnly;b.disabled=!todo.length;
@@ -1600,6 +1665,11 @@ $('updBtn').onclick=async()=>{
 };
 async function doInstall(){if(!installEvt)return;installEvt.prompt();try{await installEvt.userChoice}catch(e){}installEvt=null;$('installBtn').hidden=true;$('installBtn2').hidden=true}
 $('installBtn').onclick=()=>{closeDrawer();doInstall()};$('installBtn2').onclick=doInstall;
+
+/* ---------- cases de la carte : ouvrir le détail ---------- */
+document.querySelector('.hero-stats').addEventListener('click',e=>{const b=e.target.closest('[data-hs]');if(!b)return;const k=b.dataset.hs;
+  if(k==='income'||k==='expense'){S.typeFilter=k;$('typePills').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.type===k));go('ops');render()}
+  else if(k==='saving')go('save');else go('plan')});
 
 /* ---------- œil : masquer les montants ---------- */
 let hideAmt=false;try{hideAmt=localStorage.getItem('finperso-hide')==='1'}catch(e){}
