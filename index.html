@@ -15,7 +15,7 @@
 <meta name="apple-mobile-web-app-title" content="FinPerso">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}html.locked body>*:not(.lock){visibility:hidden}</style>
-<script>window.FINPERSO_PWA=true;try{var L=JSON.parse(localStorage.getItem('finperso-lock')||'{}'),g=+sessionStorage.getItem('fpGrace')||0;if(L.pin&&Date.now()>g)document.documentElement.classList.add('locked')}catch(e){}</script>
+<script>window.FINPERSO_PWA=true;window.FINPERSO_FB_CONFIG={apiKey:"AIzaSyBFlCE56tJL4rpnnXRqPg5oWnpp_h9MZv8",authDomain:"finperso-8708f.firebaseapp.com",projectId:"finperso-8708f",storageBucket:"finperso-8708f.firebasestorage.app",messagingSenderId:"971301096354",appId:"1:971301096354:web:e7078b47edc0cc447ac0fb"};try{var L=JSON.parse(localStorage.getItem('finperso-lock')||'{}'),g=+sessionStorage.getItem('fpGrace')||0;if(L.pin&&Date.now()>g)document.documentElement.classList.add('locked')}catch(e){}</script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1342,7 +1342,7 @@ const EN={
 "Mode de paiement ":"Payment method","Montant ":"Amount","Type":"Type","Projet ":"Project"
 };
 
-const APP_VERSION='11.0';
+const APP_VERSION='11.1';
 const I={
  acc:'<path d="M3 7h15a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3zM3 7l12-3v3M16 13.5h1"/>',
  debt:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
@@ -2523,8 +2523,8 @@ function renderCloud(){
     $('fbSave').onclick=()=>{const c=parseFbConfig($('fbCfg').value);if(!c){S.cloudErr=t('Configuration incomplète : il faut au moins apiKey, projectId et appId.');renderCloud();return}
       try{localStorage.setItem('finperso-fb',JSON.stringify(c))}catch(e){}S.cloudErr='';toast(t('Configuration enregistrée'));startFirebase()};
     return}
-  if(!fbReady){$('cloudHint').textContent=t('Connexion à Firebase…');box.innerHTML=err+`<div class="actions"><button class="btn small ghost" id="fbRetry">${t('Réessayer')}</button><button class="btn small danger" id="fbForget">${t('Retirer la configuration')}</button></div>`;
-    $('fbRetry').onclick=()=>{S.cloudErr='';startFirebase()};$('fbForget').onclick=forgetFb;return}
+  if(!fbReady){$('cloudHint').textContent=t('Connexion à Firebase…');box.innerHTML=err+`<div class="actions"><button class="btn small ghost" id="fbRetry">${t('Réessayer')}</button>${window.FINPERSO_FB_CONFIG?'':`<button class="btn small danger" id="fbForget">${t('Retirer la configuration')}</button>`}</div>`;
+    $('fbRetry').onclick=()=>{S.cloudErr='';startFirebase()};if($('fbForget'))$('fbForget').onclick=forgetFb;return}
   if(fbUser){
     $('cloudHint').textContent=t('Tes données sont enregistrées en ligne et suivent ton compte sur tous tes appareils.');
     box.innerHTML=`<div class="cloud-user">${ico('check2')}<div><b>${esc(fbUser.email||fbUser.displayName||'')}</b><span>${t('Projet : {p}',{p:esc(fbConfig().projectId)})}</span></div></div>${err}<div class="actions"><button class="btn small ghost" id="fbOut">${t('Se déconnecter')}</button></div>`;
@@ -2534,13 +2534,13 @@ function renderCloud(){
     <div class="or"><span>${t('ou avec un e-mail')}</span></div>
     <div class="two"><div class="field"><label for="fbEmail">${t('E-mail')}</label><input id="fbEmail" type="email" autocomplete="email"></div><div class="field"><label for="fbPass">${t('Mot de passe')}</label><input id="fbPass" type="password" autocomplete="current-password"></div></div>${err}
     <div class="actions"><button class="btn" id="fbIn">${t('Se connecter')}</button><button class="btn ghost" id="fbUp">${t('Créer mon compte')}</button><button class="link" id="fbReset">${t('Mot de passe oublié ?')}</button></div>
-    <button class="link" id="fbForget2" style="margin-top:8px">${t('Retirer la configuration')}</button>`;
+    ${window.FINPERSO_FB_CONFIG?'':`<button class="link" id="fbForget2" style="margin-top:8px">${t('Retirer la configuration')}</button>`}`;
   const run=async fn=>{S.cloudErr='';grace=Date.now()+120000;try{await fn()}catch(e){S.cloudErr=fbErr(e);renderCloud()}finally{grace=Date.now()+1500}};
   $('fbGoogle').onclick=()=>run(()=>firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()));
   $('fbIn').onclick=()=>run(()=>firebase.auth().signInWithEmailAndPassword($('fbEmail').value.trim(),$('fbPass').value));
   $('fbUp').onclick=()=>run(()=>firebase.auth().createUserWithEmailAndPassword($('fbEmail').value.trim(),$('fbPass').value));
   $('fbReset').onclick=()=>run(async()=>{await firebase.auth().sendPasswordResetEmail($('fbEmail').value.trim());toast(t('E-mail de réinitialisation envoyé'))});
-  $('fbForget2').onclick=forgetFb;
+  if($('fbForget2'))$('fbForget2').onclick=forgetFb;
 }
 function forgetFb(){try{localStorage.removeItem('finperso-fb')}catch(e){}toast(t('Configuration retirée. Redémarrage…'));setTimeout(()=>location.reload(),900)}
 
