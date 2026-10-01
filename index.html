@@ -642,6 +642,16 @@ html.locked .bnav,html.locked .add-menu,html.locked .period-pop{visibility:hidde
 .view.enter .greet{animation:rise .5s var(--ease) both}
 :root[data-theme="dark"] .am.sav .ic{background:#0F2A40;color:#7CC4FF}:root[data-theme="dark"] .am.lnd .ic{background:#2A1640;color:#C99BFF}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .am.sav .ic{background:#0F2A40;color:#7CC4FF}:root:not([data-theme="light"]) .am.lnd .ic{background:#2A1640;color:#C99BFF}}
+.cloud-card .cloud-err{margin:0;color:var(--danger);font-weight:700;font-size:.85rem}
+.cloud-user{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--good-soft);margin-bottom:12px}
+.cloud-user>.i{width:22px;height:22px;color:var(--good);stroke-width:2.6}
+.cloud-user b{display:block}.cloud-user span{font-size:.8rem;color:var(--muted)}
+.btn.google{width:100%;background:var(--surface);color:var(--fg);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.google .i{width:20px;height:20px;fill:#4285F4;stroke:none}
+.or{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:.78rem;font-weight:700}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+#cloudBox .field textarea{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
+#cloudBox .two{margin-bottom:12px}
 
 </style>
 
@@ -854,6 +864,10 @@ html.locked .bnav,html.locked .add-menu,html.locked .period-pop{visibility:hidde
       <div class="card-h"><div><h2>Sécurité</h2><span class="hint" id="secHint"></span></div></div>
       <div class="setlist" id="secRows"></div>
     </article>
+    <article class="card s12 cloud-card" style="--i:1" id="cloudCard" hidden>
+      <div class="card-h"><div><h2>Synchronisation en ligne</h2><span class="hint" id="cloudHint"></span></div><span class="sw-tag off" id="cloudTag"></span></div>
+      <div id="cloudBox"></div>
+    </article>
     <article class="card s12" style="--i:2" id="installCard" hidden>
       <div class="card-h"><div><h2>Installer l'application sur ton téléphone</h2><span class="hint" id="installText"></span></div><button class="btn small" id="installBtn2" hidden>Installer</button></div>
     </article>
@@ -1000,6 +1014,48 @@ html.locked .bnav,html.locked .add-menu,html.locked .period-pop{visibility:hidde
 
 <script>
 const EN={
+"Synchronisation en ligne":"Online sync",
+"Retrouve tes données sur ton PC et sur un nouveau téléphone. Gratuit avec Firebase (Google).":"Get your data on your computer and on a new phone. Free with Firebase (Google).",
+"Colle ici la configuration de ton projet Firebase":"Paste your Firebase project configuration here",
+"Enregistrer la configuration":"Save configuration",
+"Configuration incomplète : il faut au moins apiKey, projectId et appId.":"Incomplete configuration: at least apiKey, projectId and appId are needed.",
+"Configuration enregistrée":"Configuration saved",
+"Connexion à Firebase…":"Connecting to Firebase…",
+"Réessayer":"Try again",
+"Retirer la configuration":"Remove configuration",
+"Tes données sont enregistrées en ligne et suivent ton compte sur tous tes appareils.":"Your data is saved online and follows your account on all your devices.",
+"Projet : {p}":"Project: {p}",
+"Se déconnecter":"Sign out",
+"Déconnecté. Tes données restent aussi sur ce téléphone.":"Signed out. Your data also stays on this phone.",
+"Connecte-toi pour activer la synchronisation. Utilise le même compte sur ton téléphone et ton PC.":"Sign in to turn on sync. Use the same account on your phone and computer.",
+"Continuer avec Google":"Continue with Google",
+"ou avec un e-mail":"or with an email",
+"E-mail":"Email",
+"Mot de passe":"Password",
+"Se connecter":"Sign in",
+"Créer mon compte":"Create my account",
+"Mot de passe oublié ?":"Forgot password?",
+"E-mail de réinitialisation envoyé":"Reset email sent",
+"Configuration retirée. Redémarrage…":"Configuration removed. Restarting…",
+"Firebase n’a pas pu se charger. Vérifie ta connexion internet.":"Firebase couldn't load. Check your internet connection.",
+"Synchronisation…":"Syncing…",
+"{n} élément(s) envoyé(s) en ligne":"{n} item(s) uploaded",
+"En attente du réseau":"Waiting for network",
+"Hors ligne (enregistré)":"Offline (saved)",
+"Synchronisé en ligne":"Synced online",
+"Erreur de synchronisation":"Sync error",
+"E-mail ou mot de passe incorrect.":"Wrong email or password.",
+"Un compte existe déjà avec cet e-mail : connecte-toi.":"An account already exists with this email: sign in.",
+"Mot de passe trop court : 6 caractères minimum.":"Password too short: 6 characters minimum.",
+"Adresse e-mail invalide.":"Invalid email address.",
+"Ajoute {d} dans Firebase > Authentication > Paramètres > Domaines autorisés.":"Add {d} in Firebase > Authentication > Settings > Authorized domains.",
+"Active ce mode de connexion dans Firebase > Authentication > Méthode de connexion.":"Turn on this sign-in method in Firebase > Authentication > Sign-in method.",
+"Connexion annulée.":"Sign-in cancelled.",
+"La fenêtre de connexion a été bloquée. Réessaie.":"The sign-in window was blocked. Try again.",
+"Pas de connexion internet.":"No internet connection.",
+"Accès refusé : vérifie les règles Firestore.":"Access denied: check the Firestore rules.",
+"Erreur : {c}":"Error: {c}",
+"Désactivée":"Off",
 "Dates":"Dates",
 "Prêts & emprunts":"Loans & borrowing",
 "Prêts et emprunts":"Loans and borrowing",
@@ -1286,7 +1342,7 @@ const EN={
 "Mode de paiement ":"Payment method","Montant ":"Amount","Type":"Type","Projet ":"Project"
 };
 
-const APP_VERSION='10.0';
+const APP_VERSION='11.0';
 const I={
  acc:'<path d="M3 7h15a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3zM3 7l12-3v3M16 13.5h1"/>',
  debt:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
@@ -1447,6 +1503,8 @@ function safetySnapshot(){ // copie de sécurité unique avant la première ouve
 function loadLocal(){try{let d=JSON.parse(localStorage.getItem(LS)||'null');if(!d){const o=JSON.parse(localStorage.getItem('carnet-budget-v1')||'{}');d={tx:o.tx||[],settings:{budgets:o.budgets||{}}}}
   S.tx=d.tx||[];S.plans=d.plans||[];S.projects=d.projects||[];S.debts=d.debts||[];S.trash=d.trash||[];S.settings={...S.settings,...(d.settings||{})}}catch(e){}}
 function saveLocal(){try{localStorage.setItem(LS,JSON.stringify({tx:S.tx,plans:S.plans,projects:S.projects,debts:S.debts,trash:S.trash,settings:S.settings}))}catch(e){toast(t("Stockage du téléphone plein : exporte une sauvegarde."))}}
+const clean=o=>JSON.parse(JSON.stringify(o));
+let slT;function saveLocalSoon(){if(!IS_PWA)return;clearTimeout(slT);slT=setTimeout(saveLocal,800)}
 function setSync(cls,txt){$('sync').className='sync '+cls;$('sync').lastElementChild.textContent=txt;$('syncDot').className=cls}
 function showNotice(tx){$('notice').textContent=tx;$('notice').hidden=false}
 function useLocal(reason){S.mode='local';safetySnapshot();loadLocal();syncLang();setSync(IS_PWA?'ok':'warn',IS_PWA?t('Sur ce téléphone'):t('Sur cet appareil'));if(reason)showNotice(reason);render()}
@@ -1454,7 +1512,7 @@ function syncLang(){const l=S.settings.lang;if(l&&l!==LANG)setLang(l)}
 let rq=0;function schedule(){if(rq)return;rq=requestAnimationFrame(()=>{rq=0;render()})}
 async function init(){
   applyStatic();buildNav();go(START_TAB);render();
-  if(IS_PWA){S.downloads=fileSaver;useLocal(null);setupPWA();afterLoad();return}
+  if(IS_PWA){S.downloads=fileSaver;useLocal(null);setupPWA();afterLoad();startFirebase();return}
   if(!window.claude||!window.claude.use){S.downloads=fileSaver;setTimeout(afterLoad,300);useLocal(t('Synchronisation indisponible ici : tes données sont gardées dans ce navigateur uniquement.'));return}
   let user=null;
   try{[db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')])}catch(e){}
@@ -1478,10 +1536,10 @@ async function migrateV1(uid){
 }
 function setReadOnly(){S.readOnly=true;$('fab').hidden=true;showNotice(t("Lecture seule : tu n'as pas les droits d'écriture sur ce carnet."))}
 async function put(kind,obj){const {id,...rest}=obj;
-  if(S.mode==='db')await db.collection(kind).doc(id).set(rest);
+  if(S.mode==='db'){await db.collection(kind).doc(id).set(clean(rest));saveLocalSoon()}
   else{const a=S[kind],i=a.findIndex(x=>x.id===id);if(i>=0)a[i]=obj;else a.push(obj);saveLocal();render()}}
-async function del(kind,id){if(S.mode==='db')await db.collection(kind).doc(id).delete();else{S[kind]=S[kind].filter(x=>x.id!==id);saveLocal();render()}}
-async function putSettings(patch){S.settings={...S.settings,...patch};if(S.mode==='db')await db.doc('config/settings').set(S.settings);else saveLocal();render()}
+async function del(kind,id){if(S.mode==='db'){await db.collection(kind).doc(id).delete();saveLocalSoon()}else{S[kind]=S[kind].filter(x=>x.id!==id);saveLocal();render()}}
+async function putSettings(patch){S.settings={...S.settings,...patch};if(S.mode==='db'){await db.doc('config/settings').set(clean(S.settings));saveLocalSoon()}else saveLocal();render()}
 function handleErr(e){
   if(e&&e.code==='invalid_argument'){setReadOnly();return}
   if(e&&e.code==='quota_exceeded'){toast(t('Stockage plein : exporte puis supprime d’anciennes opérations.'));return}
@@ -1968,7 +2026,7 @@ function renderHistory(){
 $('months').addEventListener('click',e=>{const r=e.target.closest('[data-month]');if(!r)return;S.month=r.dataset.month;S.calDay=null;render();go('dash')});
 
 function renderSettings(){
-  renderSecurity();renderNotif();
+  renderSecurity();renderNotif();if(!document.activeElement||!document.activeElement.closest('#cloudBox'))renderCloud();
   if(document.activeElement&&document.activeElement.closest('[data-view="set"]'))return;
   $('sLang').value=LANG;
   $('sCur').innerHTML=CURRENCIES.map(c=>`<option value="${c.code}">${t(c.label)} (${c.sym})</option>`).join('');$('sCur').value=cur().code;
@@ -2314,7 +2372,7 @@ async function mergeBackup(d){
 function lastExport(){try{return +localStorage.getItem('finperso-last-export')||0}catch(e){return 0}}
 function markExport(){try{localStorage.setItem('finperso-last-export',String(Date.now()))}catch(e){}}
 function renderBackupBanner(){
-  if(!IS_PWA||!S.tx.length){$('backupBanner').hidden=true;return}
+  if(!IS_PWA||!S.tx.length||S.cloud){$('backupBanner').hidden=true;return}
   const le=lastExport(),days=le?Math.floor((Date.now()-le)/864e5):null;
   $('backupBanner').hidden=le&&days<7;
   $('backupBannerText').textContent=le?t('Dernière sauvegarde envoyée il y a {n} jours. Envoie-la sur WhatsApp, Gmail ou Drive.',{n:days}):t('Tes données ne sont que sur ce téléphone. Envoie une sauvegarde sur WhatsApp, Gmail ou Drive pour ne rien perdre.');
@@ -2396,6 +2454,95 @@ function renderOnboard(){
   $('obSteps').innerHTML=steps.map(s=>`<button type="button" class="ob ${s.ok?'done':''}" ${s.ok?'disabled':s.go?`data-go="${s.go}"`:`data-new="${s.nw}"`}><span class="ck">${s.ok?ico('check2'):''}</span><span>${t(s.l)}</span>${s.ok?'':ico('chev')}</button>`).join('');
 }
 $('obClose').onclick=()=>{try{localStorage.setItem('finperso-ob-hide','1')}catch(e){}renderOnboard()};
+
+
+/* ---------- synchronisation en ligne (Firebase) ---------- */
+const FB_V='10.12.2';let fbReady=false,fbUser=null,fbUnsubs=[],fbBusy=false;
+function fbConfig(){if(window.FINPERSO_FB_CONFIG)return window.FINPERSO_FB_CONFIG;try{return JSON.parse(localStorage.getItem('finperso-fb')||'null')}catch(e){return null}}
+function parseFbConfig(txt){const o={};['apiKey','authDomain','projectId','storageBucket','messagingSenderId','appId'].forEach(k=>{const m=String(txt).match(new RegExp(k+'["\']?\\s*:\\s*["\']([^"\']+)["\']'));if(m)o[k]=m[1]});return o.apiKey&&o.projectId&&o.appId?o:null}
+function loadScript(src){return new Promise((res,rej)=>{if(document.querySelector(`script[src="${src}"]`))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+async function startFirebase(){
+  const cfg=fbConfig();renderCloud();if(!cfg||!IS_PWA||fbReady)return;
+  try{if(!(window.firebase&&firebase.firestore&&firebase.auth))for(const m of ['app','auth','firestore'])await loadScript(`https://www.gstatic.com/firebasejs/${FB_V}/firebase-${m}-compat.js`);
+    if(!firebase.apps.length)firebase.initializeApp(cfg);
+    try{await firebase.firestore().enablePersistence({synchronizeTabs:true})}catch(e){}
+    fbReady=true;S.cloudErr='';
+    firebase.auth().onAuthStateChanged(u=>{fbUser=u;if(u)connectCloud(u);else disconnectCloud();renderCloud()});
+  }catch(e){S.cloudErr=t('Firebase n’a pas pu se charger. Vérifie ta connexion internet.');renderCloud()}
+}
+function fbAdapter(uid){
+  const fs=firebase.firestore(),base='users/'+uid+'/',fail=e=>{console.warn(e);setSync('warn',t('Erreur de synchronisation'))};
+  const wrap=r=>({set:d=>{r.set(d).catch(fail);return Promise.resolve()},delete:()=>{r.delete().catch(fail);return Promise.resolve()},get:()=>r.get(),onSnapshot:(...a)=>r.onSnapshot(...a)});
+  return{fs,collection:c=>{const col=fs.collection(base+c);return{doc:id=>wrap(col.doc(id)),get:()=>col.get(),onSnapshot:(...a)=>col.onSnapshot(...a)}},doc:p=>wrap(fs.doc(base+p))};
+}
+async function connectCloud(u){
+  if(fbBusy)return;fbBusy=true;setSync('warn',t('Synchronisation…'));
+  const ad=fbAdapter(u.uid),key='finperso-fb-merged-'+u.uid;
+  try{
+    if(!localStorage.getItem(key)){ // première connexion de cet appareil : envoyer ce qui manque en ligne
+      let sent=0;
+      for(const c of COLS){const snap=await ad.collection(c).get(),have=new Set(snap.docs.map(d=>d.id));let batch=ad.fs.batch(),n=0;
+        for(const o of S[c]){if(!o||typeof o.id!=='string'||have.has(o.id))continue;const {id,...rest}=o;batch.set(ad.fs.doc(`users/${u.uid}/${c}/${id}`),clean(rest));n++;sent++;if(n%400===0){await batch.commit();batch=ad.fs.batch()}}
+        if(n%400)await batch.commit()}
+      const sd=await ad.fs.doc(`users/${u.uid}/config/settings`).get();
+      await ad.fs.doc(`users/${u.uid}/config/settings`).set(clean(sd.exists?{...S.settings,...sd.data()}:S.settings));
+      localStorage.setItem(key,'1');if(sent)toast(t('{n} élément(s) envoyé(s) en ligne',{n:sent}));
+    }
+    fbUnsubs.forEach(f=>f());fbUnsubs=[];db=ad;S.mode='db';S.cloud=true;
+    COLS.forEach(c=>fbUnsubs.push(ad.collection(c).onSnapshot({includeMetadataChanges:true},snap=>{S[c]=snap.docs.map(d=>({id:d.id,...d.data()}));
+      setSync(snap.metadata.hasPendingWrites?'warn':'ok',snap.metadata.hasPendingWrites?t('En attente du réseau'):snap.metadata.fromCache?t('Hors ligne (enregistré)'):t('Synchronisé en ligne'));saveLocalSoon();schedule()},e=>{console.warn(e);setSync('warn',t('Erreur de synchronisation'))})));
+    fbUnsubs.push(ad.doc('config/settings').onSnapshot(d=>{if(d.exists)S.settings={...S.settings,...d.data()};syncLang();saveLocalSoon();schedule()},()=>{}));
+    setTimeout(ensureSeries,2500);renderCloud();
+  }catch(e){console.warn(e);setSync('warn',t('Erreur de synchronisation'));S.cloudErr=fbErr(e);renderCloud()}
+  finally{fbBusy=false}
+}
+function disconnectCloud(){
+  fbUnsubs.forEach(f=>f());fbUnsubs=[];
+  if(S.cloud){S.cloud=false;db=null;S.mode='local';saveLocal();loadLocal();setSync('ok',t('Sur ce téléphone'));render()}
+}
+function fbErr(e){const c=e&&e.code||'';
+  if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c))return t('E-mail ou mot de passe incorrect.');
+  if(/email-already-in-use/.test(c))return t('Un compte existe déjà avec cet e-mail : connecte-toi.');
+  if(/weak-password/.test(c))return t('Mot de passe trop court : 6 caractères minimum.');
+  if(/invalid-email/.test(c))return t('Adresse e-mail invalide.');
+  if(/unauthorized-domain/.test(c))return t('Ajoute {d} dans Firebase > Authentication > Paramètres > Domaines autorisés.',{d:location.hostname});
+  if(/operation-not-allowed/.test(c))return t('Active ce mode de connexion dans Firebase > Authentication > Méthode de connexion.');
+  if(/popup-closed|cancelled-popup/.test(c))return t('Connexion annulée.');
+  if(/popup-blocked/.test(c))return t('La fenêtre de connexion a été bloquée. Réessaie.');
+  if(/network/.test(c))return t('Pas de connexion internet.');
+  if(/permission-denied/.test(c))return t('Accès refusé : vérifie les règles Firestore.');
+  return t('Erreur : {c}',{c:c||e?.message||'?'});
+}
+function renderCloud(){
+  if(!IS_PWA){$('cloudCard').hidden=true;return}$('cloudCard').hidden=false;
+  const cfg=fbConfig(),box=$('cloudBox'),tag=$('cloudTag'),err=S.cloudErr?`<p class="cloud-err">${esc(S.cloudErr)}</p>`:'';
+  tag.className='sw-tag '+(fbUser?'on':'off');tag.textContent=t(fbUser?'Activée':'Désactivée');
+  if(!cfg){
+    $('cloudHint').textContent=t('Retrouve tes données sur ton PC et sur un nouveau téléphone. Gratuit avec Firebase (Google).');
+    box.innerHTML=`<div class="field"><label for="fbCfg">${t('Colle ici la configuration de ton projet Firebase')}</label><textarea id="fbCfg" rows="5" placeholder="const firebaseConfig = { apiKey: &quot;…&quot;, authDomain: &quot;…&quot;, projectId: &quot;…&quot;, … };"></textarea></div>${err}<div class="actions"><button class="btn" id="fbSave">${t('Enregistrer la configuration')}</button></div>`;
+    $('fbSave').onclick=()=>{const c=parseFbConfig($('fbCfg').value);if(!c){S.cloudErr=t('Configuration incomplète : il faut au moins apiKey, projectId et appId.');renderCloud();return}
+      try{localStorage.setItem('finperso-fb',JSON.stringify(c))}catch(e){}S.cloudErr='';toast(t('Configuration enregistrée'));startFirebase()};
+    return}
+  if(!fbReady){$('cloudHint').textContent=t('Connexion à Firebase…');box.innerHTML=err+`<div class="actions"><button class="btn small ghost" id="fbRetry">${t('Réessayer')}</button><button class="btn small danger" id="fbForget">${t('Retirer la configuration')}</button></div>`;
+    $('fbRetry').onclick=()=>{S.cloudErr='';startFirebase()};$('fbForget').onclick=forgetFb;return}
+  if(fbUser){
+    $('cloudHint').textContent=t('Tes données sont enregistrées en ligne et suivent ton compte sur tous tes appareils.');
+    box.innerHTML=`<div class="cloud-user">${ico('check2')}<div><b>${esc(fbUser.email||fbUser.displayName||'')}</b><span>${t('Projet : {p}',{p:esc(fbConfig().projectId)})}</span></div></div>${err}<div class="actions"><button class="btn small ghost" id="fbOut">${t('Se déconnecter')}</button></div>`;
+    $('fbOut').onclick=async()=>{try{await firebase.auth().signOut();toast(t('Déconnecté. Tes données restent aussi sur ce téléphone.'))}catch(e){}};return}
+  $('cloudHint').textContent=t('Connecte-toi pour activer la synchronisation. Utilise le même compte sur ton téléphone et ton PC.');
+  box.innerHTML=`<button class="btn google" id="fbGoogle"><svg class="i" viewBox="0 0 24 24"><path d="M21 12.2c0-.7-.1-1.3-.2-1.9H12v3.6h5c-.2 1.2-.9 2.2-1.9 2.8v2.4h3.1c1.8-1.7 2.8-4.1 2.8-6.9z"/><path d="M12 21c2.6 0 4.7-.9 6.3-2.3l-3.1-2.4c-.9.6-2 .9-3.2.9-2.5 0-4.6-1.7-5.3-3.9H3.5v2.5A9.5 9.5 0 0 0 12 21z"/></svg>${t('Continuer avec Google')}</button>
+    <div class="or"><span>${t('ou avec un e-mail')}</span></div>
+    <div class="two"><div class="field"><label for="fbEmail">${t('E-mail')}</label><input id="fbEmail" type="email" autocomplete="email"></div><div class="field"><label for="fbPass">${t('Mot de passe')}</label><input id="fbPass" type="password" autocomplete="current-password"></div></div>${err}
+    <div class="actions"><button class="btn" id="fbIn">${t('Se connecter')}</button><button class="btn ghost" id="fbUp">${t('Créer mon compte')}</button><button class="link" id="fbReset">${t('Mot de passe oublié ?')}</button></div>
+    <button class="link" id="fbForget2" style="margin-top:8px">${t('Retirer la configuration')}</button>`;
+  const run=async fn=>{S.cloudErr='';grace=Date.now()+120000;try{await fn()}catch(e){S.cloudErr=fbErr(e);renderCloud()}finally{grace=Date.now()+1500}};
+  $('fbGoogle').onclick=()=>run(()=>firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()));
+  $('fbIn').onclick=()=>run(()=>firebase.auth().signInWithEmailAndPassword($('fbEmail').value.trim(),$('fbPass').value));
+  $('fbUp').onclick=()=>run(()=>firebase.auth().createUserWithEmailAndPassword($('fbEmail').value.trim(),$('fbPass').value));
+  $('fbReset').onclick=()=>run(async()=>{await firebase.auth().sendPasswordResetEmail($('fbEmail').value.trim());toast(t('E-mail de réinitialisation envoyé'))});
+  $('fbForget2').onclick=forgetFb;
+}
+function forgetFb(){try{localStorage.removeItem('finperso-fb')}catch(e){}toast(t('Configuration retirée. Redémarrage…'));setTimeout(()=>location.reload(),900)}
 
 /* ---------- cases de la carte : ouvrir le détail ---------- */
 document.querySelector('.hero-stats').addEventListener('click',e=>{const b=e.target.closest('[data-hs]');if(!b)return;const k=b.dataset.hs;
