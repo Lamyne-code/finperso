@@ -652,6 +652,22 @@ html.locked .bnav,html.locked .add-menu,html.locked .period-pop{visibility:hidde
 .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
 #cloudBox .field textarea{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
 #cloudBox .two{margin-bottom:12px}
+.crypto-box{margin-top:12px;padding:14px 16px;border-radius:16px;background:var(--surface-2);display:flex;flex-direction:column;gap:10px}
+.crypto-box>b{display:flex;align-items:center;gap:8px;font-weight:800}
+.crypto-box>b .i{width:18px;height:18px;color:var(--brand-2)}
+.crypto-box p{margin:0;font-size:.85rem;color:var(--muted);line-height:1.45}
+.crypto-box.ok{background:var(--good-soft)}.crypto-box.ok>b .i{color:var(--good)}
+.crypto-box.warn{background:var(--warn-soft)}.crypto-box.warn>b .i{color:var(--warn)}
+.crypto-box .field input{background:var(--surface)}
+.crypto-box .two{margin:0}
+.rec{display:block;padding:14px;border-radius:12px;background:var(--surface);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.05rem;font-weight:700;letter-spacing:.06em;text-align:center;word-break:break-all;user-select:all}
+.strength{display:flex;align-items:center;gap:4px}
+.strength i{flex:1;max-width:48px;height:5px;border-radius:9px;background:var(--line)}
+.strength span{margin-left:8px;font-size:.76rem;font-weight:700;color:var(--muted)}
+.strength[data-s="1"] i:nth-child(-n+1){background:var(--danger)}
+.strength[data-s="2"] i:nth-child(-n+2){background:var(--warn)}
+.strength[data-s="3"] i:nth-child(-n+3){background:var(--good)}
+.strength[data-s="4"] i{background:var(--good)}
 
 </style>
 
@@ -1014,6 +1030,49 @@ html.locked .bnav,html.locked .add-menu,html.locked .period-pop{visibility:hidde
 
 <script>
 const EN={
+"Code de chiffrement requis":"Encryption code required",
+"Synchronisé et chiffré":"Synced and encrypted",
+"Ta clé de secours":"Your recovery key",
+"Note-la sur papier ou dans un endroit sûr, hors de ce téléphone. Elle permet de récupérer tes données si tu oublies ton code. Elle ne sera plus jamais affichée.":"Write it on paper or somewhere safe, off this phone. It lets you recover your data if you forget your code. It will never be shown again.",
+"Copier":"Copy",
+"J’ai noté ma clé":"I've saved my key",
+"Tes données sont chiffrées":"Your data is encrypted",
+"Entre ta clé de secours (24 caractères).":"Enter your recovery key (24 characters).",
+"Entre ton code de chiffrement pour les déverrouiller sur cet appareil. Il ne te sera plus demandé ensuite.":"Enter your encryption code to unlock them on this device. You won't be asked again.",
+"Code de chiffrement":"Encryption code",
+"Déverrouiller":"Unlock",
+"Utiliser mon code":"Use my code",
+"Code oublié ? Utiliser la clé de secours":"Forgot your code? Use the recovery key",
+"Chiffrement de bout en bout":"End-to-end encryption",
+"Tes données en ligne deviennent illisibles pour tout le monde, Google compris. Seul ton code de chiffrement peut les ouvrir.":"Your online data becomes unreadable to everyone, Google included. Only your encryption code can open it.",
+"Activer le chiffrement":"Turn on encryption",
+"Choisis ton code de chiffrement":"Choose your encryption code",
+"8 caractères minimum. Mélange lettres et chiffres. Il ne te sera demandé que sur un nouvel appareil : au quotidien, tu gardes ton empreinte ou ton PIN.":"8 characters minimum. Mix letters and numbers. You'll only be asked for it on a new device: day to day, you keep using your fingerprint or PIN.",
+"Confirme le code":"Confirm the code",
+"Je comprends que sans ce code ni ma clé de secours, mes données en ligne seront définitivement perdues.":"I understand that without this code or my recovery key, my online data will be lost for good.",
+"Chiffrer mes données":"Encrypt my data",
+"Changer le code de chiffrement":"Change encryption code",
+"Code actuel":"Current code",
+"Nouveau code":"New code",
+"Désactiver le chiffrement":"Turn off encryption",
+"Tes données en ligne redeviendront lisibles par Google. Entre ton code pour confirmer.":"Your online data will become readable by Google again. Enter your code to confirm.",
+"Tes données en ligne sont illisibles sans ton code. Sur un nouvel appareil, FinPerso te le demandera une seule fois.":"Your online data is unreadable without your code. On a new device, FinPerso will ask for it once.",
+"Changer le code":"Change code",
+"Patiente…":"Please wait…",
+"Code incorrect.":"Wrong code.",
+"Les deux codes ne correspondent pas.":"The two codes don't match.",
+"Code trop court : 8 caractères minimum.":"Code too short: 8 characters minimum.",
+"Coche la case pour confirmer.":"Tick the box to confirm.",
+"Trop faible":"Too weak",
+"Faible":"Weak",
+"Correct":"OK",
+"Bon":"Good",
+"Excellent":"Excellent",
+"Données chiffrées":"Data encrypted",
+"Données déverrouillées sur cet appareil":"Data unlocked on this device",
+"Code de chiffrement modifié":"Encryption code changed",
+"Chiffrement désactivé":"Encryption turned off",
+"Clé copiée":"Key copied",
 "Synchronisation en ligne":"Online sync",
 "Retrouve tes données sur ton PC et sur un nouveau téléphone. Gratuit avec Firebase (Google).":"Get your data on your computer and on a new phone. Free with Firebase (Google).",
 "Colle ici la configuration de ton projet Firebase":"Paste your Firebase project configuration here",
@@ -1342,7 +1401,7 @@ const EN={
 "Mode de paiement ":"Payment method","Montant ":"Amount","Type":"Type","Projet ":"Project"
 };
 
-const APP_VERSION='11.1';
+const APP_VERSION='12.0';
 const I={
  acc:'<path d="M3 7h15a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3zM3 7l12-3v3M16 13.5h1"/>',
  debt:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
@@ -2347,8 +2406,8 @@ $('trashList').addEventListener('click',async e=>{const b=e.target.closest('[dat
 async function purgeTrash(){const lim=Date.now()-30*864e5;for(const tr of S.trash.filter(x=>x.deletedAt<lim)){try{await del('trash',tr.id)}catch(e){}}}
 
 /* ---------- copies automatiques (téléphone) ---------- */
-function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('finperso',1);r.onupgradeneeded=()=>r.result.createObjectStore('snaps');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
-async function idbOp(mode,fn){const d=await idb();return new Promise((res,rej)=>{const tx=d.transaction('snaps',mode),st=tx.objectStore('snaps');const q=fn(st);tx.oncomplete=()=>res(q&&q.result);tx.onerror=()=>rej(tx.error)})}
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('finperso',2);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('snaps'))d.createObjectStore('snaps');if(!d.objectStoreNames.contains('keys'))d.createObjectStore('keys')};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function idbOp(mode,fn,store='snaps'){const d=await idb();return new Promise((res,rej)=>{const tx=d.transaction(store,mode),st=tx.objectStore(store);const q=fn(st);tx.oncomplete=()=>res(q&&q.result);tx.onerror=()=>rej(tx.error)})}
 const snapshotData=()=>({app:'FinPerso',version:3,exportedAt:new Date().toISOString(),tx:S.tx,plans:S.plans,projects:S.projects,debts:S.debts,settings:S.settings});
 async function dailySnapshot(){
   try{const key=todayStr();await idbOp('readwrite',st=>st.put(JSON.stringify(snapshotData()),key));
@@ -2456,6 +2515,95 @@ function renderOnboard(){
 $('obClose').onclick=()=>{try{localStorage.setItem('finperso-ob-hide','1')}catch(e){}renderOnboard()};
 
 
+
+/* ---------- chiffrement de bout en bout ----------
+   Une clé de données (AES-GCM 256) chiffre chaque document envoyé en ligne.
+   Cette clé est elle-même chiffrée avec le code de chiffrement (PBKDF2 600 000 tours)
+   et avec une clé de secours. Google ne voit que des données illisibles. */
+let DK=null,DKid=null;
+const te=new TextEncoder(),td=new TextDecoder();
+const bufB64=b=>btoa(String.fromCharCode(...new Uint8Array(b)));
+const b64Buf=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function kekFrom(secret,salt,iter){const base=await crypto.subtle.importKey('raw',te.encode(secret),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function wrapRaw(raw,secret,iter){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),k=await kekFrom(secret,salt,iter);return{salt:bufB64(salt),iv:bufB64(iv),ct:bufB64(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,raw)),iter}}
+async function unwrapRaw(w,secret){const k=await kekFrom(secret,b64Buf(w.salt),w.iter);return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64Buf(w.iv)},k,b64Buf(w.ct)))}
+const importDK=raw=>crypto.subtle.importKey('raw',raw,{name:'AES-GCM'},false,['encrypt','decrypt']);
+async function sealDoc(d){if(!DK)return d;const iv=crypto.getRandomValues(new Uint8Array(12));return{enc:1,kid:DKid,iv:bufB64(iv),ct:bufB64(await crypto.subtle.encrypt({name:'AES-GCM',iv},DK,te.encode(JSON.stringify(d))))}}
+async function openDoc(d){if(!d||!d.enc)return d;if(!DK)throw new Error('locked');return JSON.parse(td.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64Buf(d.iv)},DK,b64Buf(d.ct))))}
+async function saveLocalKey(uid,kid,key){try{await idbOp('readwrite',st=>st.put({kid,key},'dk-'+uid),'keys')}catch(e){}}
+async function loadLocalKey(uid,kid){try{const v=await idbOp('readonly',st=>st.get('dk-'+uid),'keys');if(v&&v.kid===kid){DKid=kid;return v.key}}catch(e){}return null}
+async function clearLocalKey(uid){try{await idbOp('readwrite',st=>st.delete('dk-'+uid),'keys')}catch(e){}}
+function makeRecovery(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r=crypto.getRandomValues(new Uint8Array(24));let s='';r.forEach((b,i)=>{s+=A[b%32];if(i%4===3&&i<23)s+='-'});return s}
+const normRec=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'').replace(/(.{4})(?=.)/g,'$1-');
+async function reencryptAll(){ // réécrit toutes les données en ligne avec l'état de chiffrement actuel
+  const fs=firebase.firestore(),uid=fbUser.uid;
+  for(const c of COLS){const list=S[c];let batch=fs.batch(),n=0;
+    for(const o of list){const {id,...rest}=o;batch.set(fs.doc(`users/${uid}/${c}/${id}`),await sealDoc(clean(rest)));if(++n%400===0){await batch.commit();batch=fs.batch()}}
+    if(n%400)await batch.commit()}
+  await fs.doc(`users/${uid}/config/settings`).set(await sealDoc(clean(S.settings)));
+}
+async function enableEncryption(code){
+  const raw=crypto.getRandomValues(new Uint8Array(32)),rec=makeRecovery(),kid='k'+Date.now().toString(36);
+  const meta={v:1,kid,byCode:await wrapRaw(raw,code,600000),byRecovery:await wrapRaw(raw,rec.replace(/-/g,''),100000),created:Date.now()};
+  const key=await importDK(raw);
+  const prev=[DK,DKid];DK=key;DKid=kid;
+  try{await reencryptAll();await firebase.firestore().doc(`users/${fbUser.uid}/config/crypto`).set(meta);await saveLocalKey(fbUser.uid,kid,key);S.cryptoMeta=meta}
+  catch(e){[DK,DKid]=prev;throw e}
+  return rec;
+}
+async function unlockEncryption(secret,isRecovery){
+  const m=S.cryptoMeta;const raw=await unwrapRaw(isRecovery?m.byRecovery:m.byCode,isRecovery?normRec(secret).replace(/-/g,''):secret);
+  DK=await importDK(raw);DKid=m.kid;await saveLocalKey(fbUser.uid,m.kid,DK);return raw;
+}
+async function changeEncryptionCode(oldCode,newCode){
+  const raw=await unwrapRaw(S.cryptoMeta.byCode,oldCode);
+  const meta={...S.cryptoMeta,byCode:await wrapRaw(raw,newCode,600000)};await firebase.firestore().doc(`users/${fbUser.uid}/config/crypto`).set(meta);S.cryptoMeta=meta;
+}
+async function disableEncryption(code){
+  await unwrapRaw(S.cryptoMeta.byCode,code); // vérifie le code
+  const prev=[DK,DKid];DK=null;DKid=null;
+  try{await reencryptAll();await firebase.firestore().doc(`users/${fbUser.uid}/config/crypto`).delete();await clearLocalKey(fbUser.uid);S.cryptoMeta=null}
+  catch(e){[DK,DKid]=prev;throw e}
+}
+function codeStrength(s){let sc=0;if(s.length>=8)sc++;if(s.length>=12)sc++;if(/[a-z]/i.test(s)&&/\d/.test(s))sc++;if(/[^a-z0-9]/i.test(s)||/[A-Z]/.test(s)&&/[a-z]/.test(s))sc++;return sc}
+function cryptoHTML(){
+  const m=S.cryptoMeta,st=S.cryptoUi||'';
+  if(S.recoveryShow)return `<div class="crypto-box ok"><b>${ico('key')}${t('Ta clé de secours')}</b><p>${t('Note-la sur papier ou dans un endroit sûr, hors de ce téléphone. Elle permet de récupérer tes données si tu oublies ton code. Elle ne sera plus jamais affichée.')}</p><code class="rec" id="recCode">${S.recoveryShow}</code><div class="actions"><button class="btn small ghost" id="recCopy">${t('Copier')}</button><button class="btn small" id="recDone">${t('J’ai noté ma clé')}</button></div></div>`;
+  if(S.needUnlock)return `<div class="crypto-box warn"><b>${ico('lock')}${t('Tes données sont chiffrées')}</b><p>${t(st==='rec'?'Entre ta clé de secours (24 caractères).':'Entre ton code de chiffrement pour les déverrouiller sur cet appareil. Il ne te sera plus demandé ensuite.')}</p>
+    <div class="field"><input id="ckIn" type="${st==='rec'?'text':'password'}" autocomplete="off" placeholder="${t(st==='rec'?'XXXX-XXXX-XXXX-XXXX-XXXX-XXXX':'Code de chiffrement')}" aria-label="${t('Code de chiffrement')}"></div>
+    <div class="actions"><button class="btn" id="ckUnlock">${t('Déverrouiller')}</button><button class="link" id="ckRec">${t(st==='rec'?'Utiliser mon code':'Code oublié ? Utiliser la clé de secours')}</button></div></div>`;
+  if(!m){
+    if(st!=='setup')return `<div class="crypto-box"><b>${ico('lock')}${t('Chiffrement de bout en bout')} <span class="sw-tag off">${t('Désactivé')}</span></b><p>${t('Tes données en ligne deviennent illisibles pour tout le monde, Google compris. Seul ton code de chiffrement peut les ouvrir.')}</p><button class="btn small" id="ckStart">${t('Activer le chiffrement')}</button></div>`;
+    return `<div class="crypto-box"><b>${ico('lock')}${t('Choisis ton code de chiffrement')}</b><p>${t('8 caractères minimum. Mélange lettres et chiffres. Il ne te sera demandé que sur un nouvel appareil : au quotidien, tu gardes ton empreinte ou ton PIN.')}</p>
+      <div class="two"><div class="field"><label for="ck1">${t('Code de chiffrement')}</label><input id="ck1" type="password" autocomplete="new-password"></div><div class="field"><label for="ck2">${t('Confirme le code')}</label><input id="ck2" type="password" autocomplete="new-password"></div></div>
+      <div class="strength" id="ckStr"><i></i><i></i><i></i><i></i><span></span></div>
+      <label class="chk-line"><input type="checkbox" id="ckAck"> <span>${t('Je comprends que sans ce code ni ma clé de secours, mes données en ligne seront définitivement perdues.')}</span></label>
+      <div class="actions"><button class="btn" id="ckGo">${t('Chiffrer mes données')}</button><button class="btn ghost" id="ckCancel">${t('Annuler')}</button></div></div>`;
+  }
+  if(st==='change')return `<div class="crypto-box"><b>${ico('key')}${t('Changer le code de chiffrement')}</b><div class="field"><label for="ckOld">${t('Code actuel')}</label><input id="ckOld" type="password"></div><div class="two"><div class="field"><label for="ck1">${t('Nouveau code')}</label><input id="ck1" type="password" autocomplete="new-password"></div><div class="field"><label for="ck2">${t('Confirme le code')}</label><input id="ck2" type="password" autocomplete="new-password"></div></div><div class="actions"><button class="btn" id="ckChange">${t('Enregistrer')}</button><button class="btn ghost" id="ckCancel">${t('Annuler')}</button></div></div>`;
+  if(st==='off')return `<div class="crypto-box warn"><b>${ico('lock')}${t('Désactiver le chiffrement')}</b><p>${t('Tes données en ligne redeviendront lisibles par Google. Entre ton code pour confirmer.')}</p><div class="field"><input id="ckOld" type="password" placeholder="${t('Code de chiffrement')}" aria-label="${t('Code de chiffrement')}"></div><div class="actions"><button class="btn danger" id="ckOff">${t('Désactiver')}</button><button class="btn ghost" id="ckCancel">${t('Annuler')}</button></div></div>`;
+  return `<div class="crypto-box ok"><b>${ico('lock')}${t('Chiffrement de bout en bout')} <span class="sw-tag on">${t('Activé')}</span></b><p>${t('Tes données en ligne sont illisibles sans ton code. Sur un nouvel appareil, FinPerso te le demandera une seule fois.')}</p><div class="actions"><button class="btn small ghost" id="ckToChange">${t('Changer le code')}</button><button class="btn small danger" id="ckToOff">${t('Désactiver')}</button></div></div>`;
+}
+function bindCrypto(){
+  const on=(id,ev,fn)=>{const el=$(id);if(el)el[ev]=fn};
+  const busy=async(btn,fn)=>{const b=$(btn);if(b){b.disabled=true;b.dataset.l=b.textContent;b.textContent=t('Patiente…')}S.cloudErr='';try{await fn()}catch(e){console.warn(e);S.cloudErr=e&&e.name==='OperationError'?t('Code incorrect.'):e&&e.message==='mismatch'?t('Les deux codes ne correspondent pas.'):e&&e.message==='weak'?t('Code trop court : 8 caractères minimum.'):e&&e.message==='ack'?t('Coche la case pour confirmer.'):fbErr(e)}finally{renderCloud()}};
+  const sync1=()=>{const v=$('ck1')?.value||'',s=codeStrength(v),el=$('ckStr');if(!el)return;el.dataset.s=s;el.querySelector('span').textContent=v?t(['Trop faible','Faible','Correct','Bon','Excellent'][s]):''};
+  on('ck1','oninput',sync1);
+  on('ckStart','onclick',()=>{S.cryptoUi='setup';renderCloud()});
+  on('ckCancel','onclick',()=>{S.cryptoUi='';S.cloudErr='';renderCloud()});
+  on('ckToChange','onclick',()=>{S.cryptoUi='change';renderCloud()});
+  on('ckToOff','onclick',()=>{S.cryptoUi='off';renderCloud()});
+  on('ckRec','onclick',()=>{S.cryptoUi=S.cryptoUi==='rec'?'':'rec';S.cloudErr='';renderCloud()});
+  on('ckGo','onclick',()=>busy('ckGo',async()=>{const a=$('ck1').value,b=$('ck2').value;if(a.length<8)throw new Error('weak');if(a!==b)throw new Error('mismatch');if(!$('ckAck').checked)throw new Error('ack');
+    const rec=await enableEncryption(a);S.cryptoUi='';S.recoveryShow=rec;toast(t('Données chiffrées'))}));
+  on('ckUnlock','onclick',()=>busy('ckUnlock',async()=>{await unlockEncryption($('ckIn').value,S.cryptoUi==='rec');S.cryptoUi='';S.needUnlock=false;toast(t('Données déverrouillées sur cet appareil'));connectCloud(fbUser)}));
+  on('ckChange','onclick',()=>busy('ckChange',async()=>{const a=$('ck1').value,b=$('ck2').value;if(a.length<8)throw new Error('weak');if(a!==b)throw new Error('mismatch');await changeEncryptionCode($('ckOld').value,a);S.cryptoUi='';toast(t('Code de chiffrement modifié'))}));
+  on('ckOff','onclick',()=>busy('ckOff',async()=>{await disableEncryption($('ckOld').value);S.cryptoUi='';toast(t('Chiffrement désactivé'))}));
+  on('recCopy','onclick',async()=>{try{await navigator.clipboard.writeText(S.recoveryShow);toast(t('Clé copiée'))}catch(e){const r=document.createRange();r.selectNodeContents($('recCode'));getSelection().removeAllRanges();getSelection().addRange(r)}});
+  on('recDone','onclick',()=>{S.recoveryShow=null;renderCloud()});
+  on('ckIn','onkeydown',e=>{if(e.key==='Enter')$('ckUnlock').click()});
+}
+
 /* ---------- synchronisation en ligne (Firebase) ---------- */
 const FB_V='10.12.2';let fbReady=false,fbUser=null,fbUnsubs=[],fbBusy=false;
 function fbConfig(){if(window.FINPERSO_FB_CONFIG)return window.FINPERSO_FB_CONFIG;try{return JSON.parse(localStorage.getItem('finperso-fb')||'null')}catch(e){return null}}
@@ -2472,32 +2620,44 @@ async function startFirebase(){
 }
 function fbAdapter(uid){
   const fs=firebase.firestore(),base='users/'+uid+'/',fail=e=>{console.warn(e);setSync('warn',t('Erreur de synchronisation'))};
-  const wrap=r=>({set:d=>{r.set(d).catch(fail);return Promise.resolve()},delete:()=>{r.delete().catch(fail);return Promise.resolve()},get:()=>r.get(),onSnapshot:(...a)=>r.onSnapshot(...a)});
-  return{fs,collection:c=>{const col=fs.collection(base+c);return{doc:id=>wrap(col.doc(id)),get:()=>col.get(),onSnapshot:(...a)=>col.onSnapshot(...a)}},doc:p=>wrap(fs.doc(base+p))};
+  const wrap=(r,plain)=>({set:d=>{(plain?Promise.resolve(d):sealDoc(d)).then(x=>r.set(x)).catch(fail);return Promise.resolve()},delete:()=>{r.delete().catch(fail);return Promise.resolve()},get:()=>r.get(),onSnapshot:(...a)=>r.onSnapshot(...a)});
+  return{fs,uid,collection:c=>{const col=fs.collection(base+c);return{doc:id=>wrap(col.doc(id)),get:()=>col.get(),onSnapshot:(...a)=>col.onSnapshot(...a)}},doc:p=>wrap(fs.doc(base+p),p==='config/crypto')};
 }
 async function connectCloud(u){
   if(fbBusy)return;fbBusy=true;setSync('warn',t('Synchronisation…'));
   const ad=fbAdapter(u.uid),key='finperso-fb-merged-'+u.uid;
   try{
+    // chiffrement : la clé de ce compte est-elle disponible sur cet appareil ?
+    const cd=await ad.fs.doc(`users/${u.uid}/config/crypto`).get();S.cryptoMeta=cd.exists?cd.data():null;
+    if(S.cryptoMeta&&!DK){DK=await loadLocalKey(u.uid,S.cryptoMeta.kid)}
+    if(S.cryptoMeta&&!DK){S.needUnlock=true;setSync('warn',t('Code de chiffrement requis'));renderCloud();return}
+    S.needUnlock=false;
     if(!localStorage.getItem(key)){ // première connexion de cet appareil : envoyer ce qui manque en ligne
       let sent=0;
       for(const c of COLS){const snap=await ad.collection(c).get(),have=new Set(snap.docs.map(d=>d.id));let batch=ad.fs.batch(),n=0;
-        for(const o of S[c]){if(!o||typeof o.id!=='string'||have.has(o.id))continue;const {id,...rest}=o;batch.set(ad.fs.doc(`users/${u.uid}/${c}/${id}`),clean(rest));n++;sent++;if(n%400===0){await batch.commit();batch=ad.fs.batch()}}
+        for(const o of S[c]){if(!o||typeof o.id!=='string'||have.has(o.id))continue;const {id,...rest}=o;batch.set(ad.fs.doc(`users/${u.uid}/${c}/${id}`),await sealDoc(clean(rest)));n++;sent++;if(n%400===0){await batch.commit();batch=ad.fs.batch()}}
         if(n%400)await batch.commit()}
-      const sd=await ad.fs.doc(`users/${u.uid}/config/settings`).get();
-      await ad.fs.doc(`users/${u.uid}/config/settings`).set(clean(sd.exists?{...S.settings,...sd.data()}:S.settings));
+      const sd=await ad.fs.doc(`users/${u.uid}/config/settings`).get(),cloudSet=sd.exists?await openDoc(sd.data()):null;
+      await ad.fs.doc(`users/${u.uid}/config/settings`).set(await sealDoc(clean(cloudSet?{...S.settings,...cloudSet}:S.settings)));
       localStorage.setItem(key,'1');if(sent)toast(t('{n} élément(s) envoyé(s) en ligne',{n:sent}));
     }
     fbUnsubs.forEach(f=>f());fbUnsubs=[];db=ad;S.mode='db';S.cloud=true;
-    COLS.forEach(c=>fbUnsubs.push(ad.collection(c).onSnapshot({includeMetadataChanges:true},snap=>{S[c]=snap.docs.map(d=>({id:d.id,...d.data()}));
-      setSync(snap.metadata.hasPendingWrites?'warn':'ok',snap.metadata.hasPendingWrites?t('En attente du réseau'):snap.metadata.fromCache?t('Hors ligne (enregistré)'):t('Synchronisé en ligne'));saveLocalSoon();schedule()},e=>{console.warn(e);setSync('warn',t('Erreur de synchronisation'))})));
-    fbUnsubs.push(ad.doc('config/settings').onSnapshot(d=>{if(d.exists)S.settings={...S.settings,...d.data()};syncLang();saveLocalSoon();schedule()},()=>{}));
+    COLS.forEach(c=>{let seq=0;fbUnsubs.push(ad.collection(c).onSnapshot({includeMetadataChanges:true},async snap=>{const my=++seq;
+      let locked=false;const items=(await Promise.all(snap.docs.map(async d=>{try{return{id:d.id,...(await openDoc(d.data()))}}catch(e){locked=true;return null}}))).filter(Boolean);if(my!==seq)return;
+      if(locked){lockCloud(u);return}S[c]=items;
+      setSync(snap.metadata.hasPendingWrites?'warn':'ok',snap.metadata.hasPendingWrites?t('En attente du réseau'):snap.metadata.fromCache?t('Hors ligne (enregistré)'):t(DK?'Synchronisé et chiffré':'Synchronisé en ligne'));saveLocalSoon();schedule()},e=>{console.warn(e);setSync('warn',t('Erreur de synchronisation'))}))});
+    fbUnsubs.push(ad.doc('config/settings').onSnapshot(async d=>{if(d.exists){try{S.settings={...S.settings,...(await openDoc(d.data()))}}catch(e){}}syncLang();saveLocalSoon();schedule()},()=>{}));
+    fbUnsubs.push(ad.fs.doc(`users/${u.uid}/config/crypto`).onSnapshot(d=>{const m=d.exists?d.data():null;S.cryptoMeta=m;
+      if(m&&(!DK||m.kid!==DKid)){DK=null;DKid=null;lockCloud(u);return}
+      if(!m&&DK){DK=null;DKid=null;clearLocalKey(u.uid)}renderCloud()},()=>{}));
     setTimeout(ensureSeries,2500);renderCloud();
   }catch(e){console.warn(e);setSync('warn',t('Erreur de synchronisation'));S.cloudErr=fbErr(e);renderCloud()}
   finally{fbBusy=false}
 }
+function lockCloud(u){ // données chiffrées ailleurs : on garde la copie locale et on demande le code
+  fbUnsubs.forEach(f=>f());fbUnsubs=[];if(S.cloud){S.cloud=false;db=null;S.mode='local';loadLocal()}S.needUnlock=true;setSync('warn',t('Code de chiffrement requis'));renderCloud();render()}
 function disconnectCloud(){
-  fbUnsubs.forEach(f=>f());fbUnsubs=[];
+  fbUnsubs.forEach(f=>f());fbUnsubs=[];S.needUnlock=false;
   if(S.cloud){S.cloud=false;db=null;S.mode='local';saveLocal();loadLocal();setSync('ok',t('Sur ce téléphone'));render()}
 }
 function fbErr(e){const c=e&&e.code||'';
@@ -2527,8 +2687,8 @@ function renderCloud(){
     $('fbRetry').onclick=()=>{S.cloudErr='';startFirebase()};if($('fbForget'))$('fbForget').onclick=forgetFb;return}
   if(fbUser){
     $('cloudHint').textContent=t('Tes données sont enregistrées en ligne et suivent ton compte sur tous tes appareils.');
-    box.innerHTML=`<div class="cloud-user">${ico('check2')}<div><b>${esc(fbUser.email||fbUser.displayName||'')}</b><span>${t('Projet : {p}',{p:esc(fbConfig().projectId)})}</span></div></div>${err}<div class="actions"><button class="btn small ghost" id="fbOut">${t('Se déconnecter')}</button></div>`;
-    $('fbOut').onclick=async()=>{try{await firebase.auth().signOut();toast(t('Déconnecté. Tes données restent aussi sur ce téléphone.'))}catch(e){}};return}
+    box.innerHTML=`<div class="cloud-user">${ico('check2')}<div><b>${esc(fbUser.email||fbUser.displayName||'')}</b><span>${t('Projet : {p}',{p:esc(fbConfig().projectId)})}</span></div></div>${cryptoHTML()}${err}<div class="actions" style="margin-top:12px"><button class="btn small ghost" id="fbOut">${t('Se déconnecter')}</button></div>`;bindCrypto();
+    $('fbOut').onclick=async()=>{try{DK=null;DKid=null;S.needUnlock=false;await firebase.auth().signOut();toast(t('Déconnecté. Tes données restent aussi sur ce téléphone.'))}catch(e){}};return}
   $('cloudHint').textContent=t('Connecte-toi pour activer la synchronisation. Utilise le même compte sur ton téléphone et ton PC.');
   box.innerHTML=`<button class="btn google" id="fbGoogle"><svg class="i" viewBox="0 0 24 24"><path d="M21 12.2c0-.7-.1-1.3-.2-1.9H12v3.6h5c-.2 1.2-.9 2.2-1.9 2.8v2.4h3.1c1.8-1.7 2.8-4.1 2.8-6.9z"/><path d="M12 21c2.6 0 4.7-.9 6.3-2.3l-3.1-2.4c-.9.6-2 .9-3.2.9-2.5 0-4.6-1.7-5.3-3.9H3.5v2.5A9.5 9.5 0 0 0 12 21z"/></svg>${t('Continuer avec Google')}</button>
     <div class="or"><span>${t('ou avec un e-mail')}</span></div>
